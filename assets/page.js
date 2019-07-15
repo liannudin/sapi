@@ -1,3 +1,4 @@
+
 var cookie = Cookies.get('csrf_cookie_sapi');
 
 $(document).on("click","#next-step",function(){

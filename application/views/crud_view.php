@@ -242,6 +242,53 @@ select.selectpicker {
 
 </div>
 
+<div>
+<?php if (!empty($x) && !empty($w)) { ?>
+	<h3>Kesimpulan</h3>
+	<table id="table-data" class="table table-striped table-bordered">
+
+				<thead>
+				<tr>
+				<th>Alternatif</th>
+				<th>Nilai</th>
+				</tr>
+				</thead>
+
+
+
+				<tbody id="table-body">
+				<?php if (!empty($x)) {
+					if (!empty($w)) { ?>
+						<?php foreach ($x as $xij => $nilai) {  ?>
+							<tr>
+								<td><?php echo $nilai->id_alternatif ?></td>
+								<td><?php echo $hasil = (($w->berat) * ($nilai->c1/$max_c1->c1))+(($w->umur)*($nilai->c2/$max_c2->c2))+(($w->tinggi)*($nilai->c3/$max_c3->c3))+(($w->panjang_tanduk)*($nilai->c2/$max_c4->c4))?></td>
+							</tr>
+				<?php 		}
+					}else{ ?>
+					<tr>
+						<td colspan="2"><h4 class="text-center text-danger">Matriks X sudah dimasukkan, namun Anda belum memasukkan W(bobot) Silahkan input terlebih dahulu kemudian coba lagi</h4></td>
+					</tr>
+					<?php }
+				}else{ ?>
+					<tr>
+						<td colspan="2"><h4 class="text-center text-danger">Anda belum memasukkan Matriks X Silahkan input terlebih dahulu kemudian coba lagi</h4></td>
+					</tr>
+				<?php	} ?>
+				
+				</tbody>
+
+				</table>
+<?php $data=[]; 
+foreach ($x as $xij => $nilai):  ?>
+<?php $hasil = (($w->berat) * ($nilai->c1/$max_c1->c1))+(($w->umur)*($nilai->c2/$max_c2->c2))+(($w->tinggi)*($nilai->c3/$max_c3->c3))+(($w->panjang_tanduk)*($nilai->c2/$max_c4->c4)) ?>
+<?php $data[$nilai->id_alternatif.$xij] = $hasil ?>
+<?php endforeach; ?>
+<h1>Nilai tertinggi dari perangkingan diperoleh oleh alternatif <?php $key = array_search(max($data), $data); echo substr($key, 0, 2) ?> dengan nilai <?php echo max($data) ?></h1>
+
+				<?php } ?>
+
+</div>
 </div>
 
 

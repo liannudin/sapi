@@ -8,6 +8,7 @@ class Crud extends CI_Controller
 		$this->load->model('crud_model');
 		$this->load->helper('url');
 		$this->load->database();
+		
 	}
 
 
@@ -90,15 +91,30 @@ class Crud extends CI_Controller
 	{
 		$this->load->view('paling_depan_bro');
 	}
-
+	function cek_login($table,$where){		
+		return $this->db->get_where($table,$where);
+	}
 	public function login()
 	{
 		if($this->input->post())
 		{
-
-			print_r('Saya login');
-			die;
-
+$username = $this->input->post('username');
+$password = $this->input->post('password');
+$where=array(
+	'username'=> $username,
+	'password'=> $password
+);
+$cek=$this->cek_login('user',$where)->num_rows();
+if($cek > 0){
+	$data_session=array(
+		'nama'=> $username,
+		'status'=> 'login'
+	);
+	$this->session->set_userdata($data_session);
+			redirect('crud/testing', 'refresh');
+}else{
+	redirect('login');
+}
 		}else{
 			$this->load->view('login');
 		}
@@ -112,6 +128,7 @@ class Crud extends CI_Controller
 
 	public function testing_tambah()
 	{
+		
 		if ($this->input->post()) {
 			$this->crud_model->testing_tambah();
 			redirect('crud/testing');
@@ -138,4 +155,10 @@ class Crud extends CI_Controller
 		$this->crud_model->testing_delete($id_kriteria);
 		redirect('crud/testing');
 	}
+	
+
+function logout(){
+	$this->session->sess_destroy();
+	redirect(base_url('login'));
+}
 }
